@@ -178,10 +178,6 @@ Potential features to add:
 - Data validation rules
 - Direct database integration
 
-## Credits
-
-Based on the container_check OCR functionality from the OpenCart Family system.
-
 ## License
 
 This is a standalone extraction of existing code. Use according to your organization's policies.
