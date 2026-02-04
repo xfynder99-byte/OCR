@@ -111,17 +111,61 @@
         .panel {
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
+        .pollinations-branding {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            background-color: #d0fae5;
+        }
+        .pollinations-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pollinations-logo {
+            height: 32px;
+            width: auto;
+        }
+        .pollinations-text {
+            height: 24px;
+            width: auto;
+            filter: brightness(0) saturate(100%);
+        }
+        .pollinations-badge {
+            height: 28px;
+            width: auto;
+        }
+        .branding-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="page-header">
-            <h1><i class="fa fa-file-text"></i> AI OCR Document Scanner</h1>
-            <p class="text-muted">Upload images or PDFs to extract product data using AI</p>
+            <div class="branding-container">
+                <div>
+                    <h1><i class="fa fa-file-text"></i> AI OCR Document Scanner</h1>
+                    <p class="text-muted">Upload images or PDFs to extract product data using AI</p>
+                </div>
+                <div class="pollinations-branding">
+                    <a href="https://pollinations.ai" target="_blank" rel="noopener noreferrer" title="Powered by Pollinations AI" class="pollinations-logo-container">
+                        <img src="https://raw.githubusercontent.com/pollinations/pollinations/refs/heads/main/enter.pollinations.ai/public/logo_text_black.svg" alt="Pollinations" class="pollinations-text">
+                    </a>
+                    <a href="https://pollinations.ai" target="_blank" rel="noopener noreferrer">
+                        <img src="https://img.shields.io/badge/Built%20with-Pollinations-8a2be2?style=for-the-badge&logo=data:image/svg+xml,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20viewBox%3D%220%200%20124%20124%22%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%2262%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E&logoColor=white&labelColor=6a0dad" alt="Built with Pollinations" class="pollinations-badge">
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div id="alerts"></div>
-
+        
         <div class="row">
             <div class="col-md-6">
                 <div class="panel panel-default">
