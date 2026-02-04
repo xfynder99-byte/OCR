@@ -197,12 +197,54 @@ async function processImage() {
 
         if (response.success) {
             const result = JSON.parse(response.data);
-            if (result.choices) {
-                const extractedData = JSON.parse(result.choices[0].message.content_blocks[0].text);
-                products.push(...extractedData);
-                console.log('Extracted products:', products);
-            } else {
-                showAlert('danger', result.error?.message || 'Error processing image');
+            console.log('API Response:', result);
+            
+            // Handle different response formats
+            let extractedData;
+            try {
+                if (result.choices && result.choices[0]) {
+                    // Try different possible response structures
+                    const choice = result.choices[0];
+                    if (choice.message && choice.message.content_blocks) {
+                        // Find the text block (skip image blocks)
+                        const textBlock = choice.message.content_blocks.find(block => block.type === 'text');
+                        if (textBlock && textBlock.text) {
+                            const textContent = textBlock.text;
+                            console.log('Parsing content_blocks text:', textContent);
+                            extractedData = JSON.parse(textContent);
+                        }
+                    } else if (choice.message && choice.message.content) {
+                        const textContent = choice.message.content;
+                        console.log('Parsing content:', textContent);
+                        extractedData = JSON.parse(textContent);
+                    } else if (choice.text) {
+                        const textContent = choice.text;
+                        console.log('Parsing text:', textContent);
+                        extractedData = JSON.parse(textContent);
+                    }
+                } else if (result.candidates && result.candidates[0]) {
+                    // Gemini format
+                    const candidate = result.candidates[0];
+                    if (candidate.content && candidate.content.parts && candidate.content.parts[0]) {
+                        const textContent = candidate.content.parts[0].text;
+                        console.log('Parsing Gemini format:', textContent);
+                        extractedData = JSON.parse(textContent);
+                    }
+                }
+                
+                if (extractedData) {
+                    products.push(...extractedData);
+                    console.log('Extracted products:', products);
+                } else {
+                    console.error('Could not find data in response structure:', result);
+                    showAlert('danger', 'Error: Could not find data in AI response. Check console for details.');
+                    span.remove();
+                    return;
+                }
+            } catch (parseError) {
+                console.error('JSON Parse Error:', parseError);
+                console.error('Failed to parse:', result);
+                showAlert('danger', 'Error parsing AI response: ' + parseError.message);
                 span.remove();
                 return;
             }
@@ -304,10 +346,13 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
         });
 
         if (!response.ok) {
-            throw new Error('API request failed: ' + response.statusText);
+            const errorText = await response.text();
+            console.error('API Error Response:', errorText);
+            throw new Error('API request failed: ' + response.statusText + ' - ' + errorText);
         }
 
         const data = await response.json();
+        console.log('Full API Response:', data);
         return {
             success: true,
             data: JSON.stringify(data)
