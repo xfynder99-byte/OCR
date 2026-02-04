@@ -1,32 +1,7 @@
 // Configuration
 const CONFIG = {
-    API_ENDPOINT: 'https://gen.pollinations.ai/v1/chat/completions'
+    API_ENDPOINT: 'https://family-site.alwaysdata.net/ocr/api.php' // Uses your server's backend (API key hidden)
 };
-
-// Get API key from localStorage or prompt user
-function getApiKey() {
-    let apiKey = localStorage.getItem('pollinations_api_key');
-    
-    if (!apiKey || apiKey === 'YOUR_API_KEY_HERE') {
-        apiKey = prompt(
-            'Please enter your Pollinations API key:\n\n' +
-            'Get a free API key at: https://pollinations.ai\n\n' +
-            'Your key will be saved locally in your browser.'
-        );
-        
-        if (apiKey) {
-            localStorage.setItem('pollinations_api_key', apiKey);
-        }
-    }
-    
-    return apiKey;
-}
-
-// Clear API key (for settings)
-function clearApiKey() {
-    localStorage.removeItem('pollinations_api_key');
-    showAlert('info', 'API key cleared. You will be prompted on next scan.');
-}
 
 // DOM Elements
 const imageInput = document.getElementById('input-image');
@@ -296,17 +271,9 @@ async function processImage() {
     span.remove();
 }
 
-// Call AI API
+// Call AI API via backend proxy
 async function callAI(dataUrl, comment, column, prevData, useProModel) {
     try {
-        const apiKey = getApiKey();
-        
-        if (!apiKey) {
-            return {
-                success: false,
-                error: 'API key is required. Please provide a valid Pollinations API key.'
-            };
-        }
 
         const model = useProModel ? 'gemini-3-pro-preview' : 'gemini-3-flash';
         
@@ -339,7 +306,6 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
         const response = await fetch(CONFIG.API_ENDPOINT, {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + apiKey,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
