@@ -147,7 +147,7 @@ The AI automatically:
 ## File Structure
 
 ```
-ocr_standalone/
+ocr/
 ├── index.html          # Main HTML file
 ├── app.js             # JavaScript logic
 └── README.md          # This file
