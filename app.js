@@ -1,9 +1,32 @@
 // Configuration
 const CONFIG = {
-    // Replace with your Pollinations API key
-    POLLINATIONS_API_KEY: 'YOUR_API_KEY_HERE',
     API_ENDPOINT: 'https://gen.pollinations.ai/v1/chat/completions'
 };
+
+// Get API key from localStorage or prompt user
+function getApiKey() {
+    let apiKey = localStorage.getItem('pollinations_api_key');
+    
+    if (!apiKey || apiKey === 'YOUR_API_KEY_HERE') {
+        apiKey = prompt(
+            'Please enter your Pollinations API key:\n\n' +
+            'Get a free API key at: https://pollinations.ai\n\n' +
+            'Your key will be saved locally in your browser.'
+        );
+        
+        if (apiKey) {
+            localStorage.setItem('pollinations_api_key', apiKey);
+        }
+    }
+    
+    return apiKey;
+}
+
+// Clear API key (for settings)
+function clearApiKey() {
+    localStorage.removeItem('pollinations_api_key');
+    showAlert('info', 'API key cleared. You will be prompted on next scan.');
+}
 
 // DOM Elements
 const imageInput = document.getElementById('input-image');
@@ -234,10 +257,12 @@ async function processImage() {
 // Call AI API
 async function callAI(dataUrl, comment, column, prevData, useProModel) {
     try {
-        if (!CONFIG.POLLINATIONS_API_KEY || CONFIG.POLLINATIONS_API_KEY === 'YOUR_API_KEY_HERE') {
+        const apiKey = getApiKey();
+        
+        if (!apiKey) {
             return {
                 success: false,
-                error: 'Please configure your Pollinations API key in app.js (CONFIG.POLLINATIONS_API_KEY)'
+                error: 'API key is required. Please provide a valid Pollinations API key.'
             };
         }
 
@@ -272,7 +297,7 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
         const response = await fetch(CONFIG.API_ENDPOINT, {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + CONFIG.POLLINATIONS_API_KEY,
+                'Authorization': 'Bearer ' + apiKey,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
