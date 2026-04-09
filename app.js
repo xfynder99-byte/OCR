@@ -185,10 +185,13 @@ async function processImage() {
                         const textBlock = choice.message.content_blocks.find(block => block.type === 'text');
                         if (textBlock && textBlock.text) {
                             const textContent = textBlock.text;
-                            console.log('Parsing content_blocks text:', textContent);
+                            
                             if (textContent.startsWith('```')) {
                                 textContent = textContent.replace(/```json|```/g, '').trim();
                             }
+
+                            console.log('Parsing content_blocks text:', textContent);
+                            
                             extractedData = JSON.parse(textContent);
                         }
                     } else if (choice.message && choice.message.content) {
