@@ -275,7 +275,7 @@ async function processImage() {
 async function callAI(dataUrl, comment, column, prevData, useProModel) {
     try {
 
-        const model = useProModel ? 'gemini-3-pro-preview' : 'gemini-3-flash';
+        const model = useProModel ? 'qwen-vision' : 'gemini-fast';
         
         const prev_data = prevData && prevData.length > 0 
             ? ' Previous data extracted: ' + JSON.stringify(prevData) + '.'
