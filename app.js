@@ -289,7 +289,7 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
                     content: [
                         {
                             type: 'text',
-                            text: prev_data + 'Extract the table containing product data in JSON array format without headers and not in markdown.' + 
+                            text: 'Extract the table containing product data in JSON array format without headers and not in markdown.' + 
                                   (comment ? ' ' + comment + '.' : '') + 
                                   ' Extract data exactly as: ["product code", "description", value in column "' + column + '" as number]'
                         },
@@ -300,7 +300,29 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
                     ]
                 }
             ],
-            temperature: 0
+            temperature: 0.2,
+            thinking: {
+                type: 'disabled'
+            },
+            response_format: {
+                type: 'json_schema',
+                json_schema: {
+                    name: 'products',
+                    strict: true,
+                    schema: {
+                        type: 'array',
+                        items: {
+                            type: 'array',
+                            items: {
+                                anyOf: [
+                                    { type: 'string' },
+                                    { type: 'number' }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
         };
 
         const response = await fetch(CONFIG.API_ENDPOINT, {
