@@ -297,7 +297,7 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
                             type: 'text',
                             text: "Extract the table containing the product data. Follow the requested JSON schema strictly without markdown." + 
                                   (comment ? ' ' + comment + '.' : '') + 
-                                  ' Extract data exactly as: ["product code", "description", value in column "' + column + '" as number]'
+                                  ' Extract data exactly as: ["product code", "description", *MAKE EXTREMLY SURE THAT YOU ARE EXTRACTING THE VALUE FROM THIS EXACT COLUMN "' + column + '" as number]'
                         },
                         {
                             type: 'image_url',
