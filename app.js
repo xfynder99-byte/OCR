@@ -186,6 +186,9 @@ async function processImage() {
                         if (textBlock && textBlock.text) {
                             const textContent = textBlock.text;
                             console.log('Parsing content_blocks text:', textContent);
+                            if (textContent.startsWith('```')) {
+                                textContent = textContent.replace(/```json|```/g, '').trim();
+                            }
                             extractedData = JSON.parse(textContent);
                         }
                     } else if (choice.message && choice.message.content) {
