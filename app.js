@@ -289,7 +289,7 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
                     content: [
                         {
                             type: 'text',
-                            text: "Extract the table containing the product data in JSON array of arrays format without headers, not in markdown and without a wrapper object and don't include ```json```." + 
+                            text: "Extract the table containing the product data. Follow the requested JSON schema strictly." + 
                                   (comment ? ' ' + comment + '.' : '') + 
                                   ' Extract data exactly as: ["product code", "description", value in column "' + column + '" as number]'
                         },
@@ -310,16 +310,23 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
                     name: 'products',
                     strict: true,
                     schema: {
-                        type: 'array',
-                        items: {
-                            type: 'array',
-                            items: {
-                                anyOf: [
-                                    { type: 'string' },
-                                    { type: 'number' }
-                                ]
+                        type: 'object', // Changed to object to satisfy "strict" requirements
+                        properties: {
+                            data: { // This acts as your list container
+                                type: 'array',
+                                items: {
+                                    type: 'array',
+                                    prefixItems: [ // Use prefixItems to enforce exact column order
+                                        { type: 'string' }, // product code
+                                        { type: 'string' }, // description
+                                        { type: 'number' }  // price/value
+                                    ],
+                                    additionalItems: false
+                                }
                             }
-                        }
+                        },
+                        required: ['data'],
+                        additionalProperties: false
                     }
                 }
             }
