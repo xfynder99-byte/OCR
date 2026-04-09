@@ -1,6 +1,6 @@
 // Configuration
 const CONFIG = {
-    API_ENDPOINT: 'https://family-site.alwaysdata.net/ocr/api.php' // Uses your server's backend (API key hidden)
+    API_ENDPOINT: 'https://family-site.alwaysdata.net/ocr_standalone/api.php' // Uses your server's backend (API key hidden)
 };
 
 // DOM Elements
