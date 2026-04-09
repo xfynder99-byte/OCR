@@ -184,7 +184,7 @@ async function processImage() {
                         // Find the text block (skip image blocks)
                         const textBlock = choice.message.content_blocks.find(block => block.type === 'text');
                         if (textBlock && textBlock.text) {
-                            const textContent = textBlock.text;
+                            let textContent = textBlock.text;
                             
                             if (textContent.startsWith('```')) {
                                 textContent = textContent.replace(/```json|```/g, '').trim();
