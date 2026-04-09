@@ -289,7 +289,7 @@ async function callAI(dataUrl, comment, column, prevData, useProModel) {
                     content: [
                         {
                             type: 'text',
-                            text: 'Extract the table containing the product data in JSON array of arrays format without headers, not in markdown and without a wrapper object and don't include ```json```.' + 
+                            text: "Extract the table containing the product data in JSON array of arrays format without headers, not in markdown and without a wrapper object and don't include ```json```." + 
                                   (comment ? ' ' + comment + '.' : '') + 
                                   ' Extract data exactly as: ["product code", "description", value in column "' + column + '" as number]'
                         },
